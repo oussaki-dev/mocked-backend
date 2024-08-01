@@ -20,6 +20,7 @@ export class AppController {
   users = [
     {
       'username': 'user1',
+      'password': 'pass1',
       'info': {
         'token': randomUUID(),
         'refresh_token': randomUUID(),
@@ -38,6 +39,7 @@ export class AppController {
     },
     {
       'username': 'user2',
+      'password': 'pass2',
       'info': {
         'token': randomUUID(),
         'refresh_token': randomUUID(),
@@ -63,7 +65,14 @@ export class AppController {
 
   @Post('/login')
   login(@Body() body) {
-    return this.users.find((user) => user.username == body.username).info
+   let user = this.users.find((user) => user.username == body.username)
+   if(user && user.password == body.password ){
+      return user.info;
+   }else {
+    return  {'error_code': 'invalid_creds'};
+   }
+
+    
   }
 
 
