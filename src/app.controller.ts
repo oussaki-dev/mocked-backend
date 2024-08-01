@@ -79,12 +79,13 @@ export class AppController {
   @Post('/beneficiary')
   addBeneficiary(@Body() body) {
     let ben = { 'id': (this.beneficiaries.length + 1).toString(), 'nickname': body.nickname, 'mobileNumber': body.mobileNumber }
-    this.beneficiaries.push(ben)
+    // this.beneficiaries.push(ben)
     return ben;
   }
 
   @Get('/beneficiary')
-  getBeneficiaries() {
+  async getBeneficiaries() {
+    await new Promise(r => setTimeout(r, 800));
     return {
       "beneficiaries": this.beneficiaries
     };
@@ -93,7 +94,7 @@ export class AppController {
   @Post('/topup')
   async topup(@Body() body)  {
     console.log(body);
-    await new Promise(r => setTimeout(r, 2000));
+    await new Promise(r => setTimeout(r, 1200));
     let beneficiaryObject = this.beneficiaries.find((b, index)=> b.id  ==  body.beneficiaryId);
     console.log(beneficiaryObject);
     return { 'transaction_id': '111111', 'beneficiary': beneficiaryObject, 'amount': body.amount, 'currency': 'AED'};
